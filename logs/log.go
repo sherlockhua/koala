@@ -3,6 +3,7 @@ package logs
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -30,7 +31,7 @@ type Logger interface {
 	Errorf(ctx context.Context, format string, args ...interface{})
 	Panicf(ctx context.Context, format string, args ...interface{})
 	Fatalf(ctx context.Context, format string, args ...interface{})
-	WithFields(fields logrus.Fields) Logger
+	WithFields(fields Fields) Logger
 }
 
 type LoggerImp struct {
@@ -42,6 +43,15 @@ type LoggerImp struct {
 func NewLogger(conf *config.Config) Logger {
 
 	once.Do(func() {
+		var err error
+		defer func() {
+			if err != nil {
+				loggerImp.logger.SetOutput(os.Stderr)
+				loggerImp.accessLogger.SetOutput(os.Stderr)
+				loggerImp.errorLogger.SetOutput(os.Stderr)
+				fmt.Printf("initializing loggers failed: %v", err)
+			}
+		}()
 		loggerImp = &LoggerImp{
 			logger:       logrus.New(),
 			errorLogger:  logrus.New(),
@@ -49,9 +59,18 @@ func NewLogger(conf *config.Config) Logger {
 		}
 
 		// Initialize the loggers
-		Init(conf.Logger.AccessFileName, conf.Logger.LogLevel, loggerImp.accessLogger)
-		Init(conf.Logger.Filename, conf.Logger.LogLevel, loggerImp.logger)
-		Init(conf.Logger.ErrFileName, conf.Logger.LogLevel, loggerImp.errorLogger)
+		err = Init(conf.Logger.AccessFileName, conf.Logger.LogLevel, loggerImp.accessLogger)
+		if err != nil {
+			return
+		}
+		err = Init(conf.Logger.Filename, conf.Logger.LogLevel, loggerImp.logger)
+		if err != nil {
+			return
+		}
+		err = Init(conf.Logger.ErrFileName, conf.Logger.LogLevel, loggerImp.errorLogger)
+		if err != nil {
+			return
+		}
 	})
 	return loggerImp
 }
@@ -138,7 +157,7 @@ func Fatalf(ctx context.Context, format string, args ...interface{}) {
 	loggerImp.errorLogger.WithContext(ctx).Fatalf(format, args...)
 }
 
-func WithFields(fields logrus.Fields) Logger {
+func WithFields(fields map[string]interface{}) Logger {
 	return NewField(fields)
 }
 
@@ -175,7 +194,7 @@ func (l *LoggerImp) Accessf(ctx context.Context, format string, args ...interfac
 	l.accessLogger.WithContext(ctx).Infof(format, args...)
 }
 
-func (l *LoggerImp) WithFields(fields logrus.Fields) Logger {
+func (l *LoggerImp) WithFields(fields Fields) Logger {
 	return NewField(fields)
 }
 

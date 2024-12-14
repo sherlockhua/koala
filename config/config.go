@@ -9,12 +9,12 @@ import (
 )
 
 const (
-	LogLevelDebug string = "Debug"
-	LogLevelTrace string = "Trace"
-	LogLevelInfo  string = "Info"
-	LogLevelWarn  string = "Warn"
-	LogLevelError string = "Error"
-	LogLevelFatal string = "Fatal"
+	LogLevelDebug string = "debug"
+	LogLevelTrace string = "trace"
+	LogLevelInfo  string = "info"
+	LogLevelWarn  string = "warn"
+	LogLevelError string = "error"
+	LogLevelFatal string = "fatal"
 )
 
 // MySQLConfig 结构体，包含 MySQL 配置项和超时设置

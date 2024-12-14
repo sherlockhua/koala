@@ -6,23 +6,25 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Field struct {
-	fields logrus.Fields
+type field struct {
+	fields map[string]interface{}
 }
 
-func NewField(fields logrus.Fields) *Field {
-	return &Field{fields: fields}
+type Fields map[string]interface{}
+
+func NewField(fields Fields) *field {
+	return &field{fields: fields}
 }
 
-func (f *Field) Tracef(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Tracef(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Tracef(format, args...)
+		loggerImp.logger.WithContext(ctx).WithFields(logrus.Fields(f.fields)).Tracef(format, args...)
 		return
 	}
 	loggerImp.logger.WithContext(ctx).Tracef(format, args...)
 }
 
-func (f *Field) Debugf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Debugf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Debugf(format, args...)
 		return
@@ -30,7 +32,7 @@ func (f *Field) Debugf(ctx context.Context, format string, args ...interface{}) 
 	loggerImp.logger.WithContext(ctx).Debugf(format, args...)
 }
 
-func (f *Field) Infof(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Infof(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Infof(format, args...)
 		return
@@ -38,7 +40,7 @@ func (f *Field) Infof(ctx context.Context, format string, args ...interface{}) {
 	loggerImp.logger.WithContext(ctx).Infof(format, args...)
 }
 
-func (f *Field) Warnf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Warnf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Warnf(format, args...)
 		return
@@ -46,7 +48,7 @@ func (f *Field) Warnf(ctx context.Context, format string, args ...interface{}) {
 	loggerImp.errorLogger.WithContext(ctx).Warnf(format, args...)
 }
 
-func (f *Field) Panicf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Panicf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Panicf(format, args...)
 		return
@@ -54,7 +56,7 @@ func (f *Field) Panicf(ctx context.Context, format string, args ...interface{}) 
 	loggerImp.errorLogger.WithContext(ctx).Panicf(format, args...)
 }
 
-func (f *Field) Fatalf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Fatalf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Fatalf(format, args...)
 		return
@@ -62,7 +64,7 @@ func (f *Field) Fatalf(ctx context.Context, format string, args ...interface{}) 
 	loggerImp.errorLogger.WithContext(ctx).Fatalf(format, args...)
 }
 
-func (f *Field) Errorf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Errorf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Errorf(format, args...)
 		return
@@ -70,7 +72,7 @@ func (f *Field) Errorf(ctx context.Context, format string, args ...interface{}) 
 	loggerImp.errorLogger.WithContext(ctx).Errorf(format, args...)
 }
 
-func (f *Field) Accessf(ctx context.Context, format string, args ...interface{}) {
+func (f *field) Accessf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
 		loggerImp.accessLogger.WithContext(ctx).WithFields(f.fields).Infof(format, args...)
 		return
@@ -78,7 +80,7 @@ func (f *Field) Accessf(ctx context.Context, format string, args ...interface{})
 	loggerImp.accessLogger.WithContext(ctx).Infof(format, args...)
 }
 
-func (f *Field) WithFields(fields logrus.Fields) Logger {
+func (f *field) WithFields(fields Fields) Logger {
 	for k, v := range fields {
 		f.fields[k] = v
 	}
