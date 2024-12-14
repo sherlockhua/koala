@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"gopkg.in/yaml.v2"
@@ -64,7 +65,7 @@ type Config struct {
 
 // 读取 YAML 配置文件
 func LoadConfigFromYAML(filepath ConfigFile) (*Config, error) {
-	var config Config
+	var conf Config
 
 	// 读取 YAML 文件内容
 	data, err := os.ReadFile(string(filepath))
@@ -73,12 +74,13 @@ func LoadConfigFromYAML(filepath ConfigFile) (*Config, error) {
 	}
 
 	// 解析 YAML 文件内容
-	err = yaml.Unmarshal(data, &config)
+	err = yaml.Unmarshal(data, &conf)
 	if err != nil {
 		return nil, fmt.Errorf("解析 YAML 配置文件失败: %v", err)
 	}
 
-	return &config, nil
+	conf.Logger.LogLevel = strings.ToLower(conf.Logger.LogLevel)
+	return &conf, nil
 }
 
 type ConfigFile string
