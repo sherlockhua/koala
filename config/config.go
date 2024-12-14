@@ -61,6 +61,11 @@ type Config struct {
 	Redis  RedisConfig  `yaml:"redis"`
 	Task   TaskConfig   `yaml:"task"`
 	Logger LoggerConfig `yaml:"logger"`
+	Server ServerConfig `yaml:"server"`
+}
+
+type ServerConfig struct {
+	ListenAddr string `yaml:"listen_addr"`
 }
 
 // 读取 YAML 配置文件
