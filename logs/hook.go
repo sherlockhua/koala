@@ -17,6 +17,11 @@ func (h *MyHook) Fire(entry *logrus.Entry) error {
 	} else {
 		entry.Data["line"] = "unknown:-1"
 	}
+
+	val := entry.Context.Value(LOGID)
+	if val != nil {
+		entry.Data["logid"] = val
+	}
 	return nil
 }
 

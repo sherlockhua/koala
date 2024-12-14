@@ -13,9 +13,9 @@ func TestNewLogger_TraceMessageWithContext(t *testing.T) {
 	// Create a mock config
 	mockConfig := &config.Config{
 		Logger: config.LoggerConfig{
-			AccessFileName: "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/access.log",
-			Filename:       "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/app.log",
-			ErrFileName:    "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/error.log",
+			AccessFileName: "./logs/access.log",
+			Filename:       "./logs/app.log",
+			ErrFileName:    "./logs/error.log",
 			LogLevel:       "debug",
 		},
 	}
@@ -30,7 +30,7 @@ func TestNewLogger_TraceMessageWithContext(t *testing.T) {
 
 	// Create a context
 	ctx := context.Background()
-
+	ctx = WithLogId(ctx, "thisislslslslsslsllsl")
 	// Log a trace message
 	for i := 0; i < 10000; i++ {
 		WithFields(logrus.Fields{"user_id": 22, "password": 222, "name": "zhanghua"}).Accessf(ctx, "this is a access log message")

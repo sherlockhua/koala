@@ -16,7 +16,7 @@ func NewField(fields logrus.Fields) *Field {
 
 func (f *Field) Tracef(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.logger.WithFields(f.fields).Tracef(format, args...)
+		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Tracef(format, args...)
 		return
 	}
 	loggerImp.logger.WithContext(ctx).Tracef(format, args...)
@@ -24,7 +24,7 @@ func (f *Field) Tracef(ctx context.Context, format string, args ...interface{}) 
 
 func (f *Field) Debugf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.logger.WithFields(f.fields).Debugf(format, args...)
+		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Debugf(format, args...)
 		return
 	}
 	loggerImp.logger.WithContext(ctx).Debugf(format, args...)
@@ -32,7 +32,7 @@ func (f *Field) Debugf(ctx context.Context, format string, args ...interface{}) 
 
 func (f *Field) Infof(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.logger.WithFields(f.fields).Infof(format, args...)
+		loggerImp.logger.WithContext(ctx).WithFields(f.fields).Infof(format, args...)
 		return
 	}
 	loggerImp.logger.WithContext(ctx).Infof(format, args...)
@@ -40,7 +40,7 @@ func (f *Field) Infof(ctx context.Context, format string, args ...interface{}) {
 
 func (f *Field) Warnf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.errorLogger.WithFields(f.fields).Warnf(format, args...)
+		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Warnf(format, args...)
 		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Warnf(format, args...)
@@ -48,7 +48,7 @@ func (f *Field) Warnf(ctx context.Context, format string, args ...interface{}) {
 
 func (f *Field) Panicf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.errorLogger.WithFields(f.fields).Panicf(format, args...)
+		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Panicf(format, args...)
 		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Panicf(format, args...)
@@ -56,7 +56,7 @@ func (f *Field) Panicf(ctx context.Context, format string, args ...interface{}) 
 
 func (f *Field) Fatalf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.errorLogger.WithFields(f.fields).Fatalf(format, args...)
+		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Fatalf(format, args...)
 		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Fatalf(format, args...)
@@ -64,7 +64,7 @@ func (f *Field) Fatalf(ctx context.Context, format string, args ...interface{}) 
 
 func (f *Field) Errorf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.errorLogger.WithFields(f.fields).Errorf(format, args...)
+		loggerImp.errorLogger.WithContext(ctx).WithFields(f.fields).Errorf(format, args...)
 		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Errorf(format, args...)
@@ -72,7 +72,7 @@ func (f *Field) Errorf(ctx context.Context, format string, args ...interface{}) 
 
 func (f *Field) Accessf(ctx context.Context, format string, args ...interface{}) {
 	if f.fields != nil {
-		loggerImp.accessLogger.WithFields(f.fields).Infof(format, args...)
+		loggerImp.accessLogger.WithContext(ctx).WithFields(f.fields).Infof(format, args...)
 		return
 	}
 	loggerImp.accessLogger.WithContext(ctx).Infof(format, args...)

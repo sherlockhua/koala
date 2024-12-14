@@ -12,6 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const (
+	LOGID = "koala_logid"
+)
+
 var (
 	loggerImp *LoggerImp
 	once      sync.Once
@@ -173,4 +177,8 @@ func (l *LoggerImp) Accessf(ctx context.Context, format string, args ...interfac
 
 func (l *LoggerImp) WithFields(fields logrus.Fields) Logger {
 	return NewField(fields)
+}
+
+func WithLogId(ctx context.Context, logId string) context.Context {
+	return context.WithValue(ctx, LOGID, logId)
 }
