@@ -3,15 +3,18 @@ package logs
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
+	"metaphysics/internal/infra/config"
+
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
-	"github.com/sherlockhua/koala/config"
 	"github.com/sirupsen/logrus"
 )
 
 var (
 	loggerImp *LoggerImp
+	once      sync.Once
 )
 
 type Logger interface {
@@ -32,31 +35,21 @@ type LoggerImp struct {
 	accessLogger *logrus.Logger
 }
 
-func NewLogger(conf *config.Config) (Logger, error) {
+func NewLogger(conf *config.Config) Logger {
 
-	loggerImp = &LoggerImp{
-		logger:       logrus.New(),
-		errorLogger:  logrus.New(),
-		accessLogger: logrus.New(),
-	}
+	once.Do(func() {
+		loggerImp = &LoggerImp{
+			logger:       logrus.New(),
+			errorLogger:  logrus.New(),
+			accessLogger: logrus.New(),
+		}
 
-	// Initialize the loggers
-	err := Init(conf.Logger.AccessFileName, conf.Logger.LogLevel, loggerImp.accessLogger)
-	if err != nil {
-		return nil, err
-	}
-
-	err = Init(conf.Logger.Filename, conf.Logger.LogLevel, loggerImp.logger)
-	if err != nil {
-		return nil, err
-	}
-
-	err = Init(conf.Logger.ErrFileName, conf.Logger.LogLevel, loggerImp.errorLogger)
-	if err != nil {
-		return nil, err
-	}
-
-	return loggerImp, nil
+		// Initialize the loggers
+		Init(conf.Logger.AccessFileName, conf.Logger.LogLevel, loggerImp.accessLogger)
+		Init(conf.Logger.Filename, conf.Logger.LogLevel, loggerImp.logger)
+		Init(conf.Logger.ErrFileName, conf.Logger.LogLevel, loggerImp.errorLogger)
+	})
+	return loggerImp
 }
 
 func Init(filename string, logLevel string, logger *logrus.Logger) (err error) {

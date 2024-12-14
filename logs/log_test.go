@@ -4,7 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sherlockhua/koala/config"
+	"metaphysics/internal/infra/config"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,15 +16,12 @@ func TestNewLogger_TraceMessageWithContext(t *testing.T) {
 			AccessFileName: "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/access.log",
 			Filename:       "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/app.log",
 			ErrFileName:    "/Users/sherlockhua/project/go/src/github.com/sherlockhua/koala/logs/error.log",
-			LogLevel:       "Debug",
+			LogLevel:       "debug",
 		},
 	}
 
 	// Create a new logger
-	logger, err := NewLogger(mockConfig)
-	if err != nil {
-		t.Fatalf("new logger failed: %v", err)
-	}
+	logger := NewLogger(mockConfig)
 	// Create a buffer to capture log output
 	//var buf bytes.Buffer
 
