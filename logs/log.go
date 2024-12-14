@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"metaphysics/internal/infra/config"
+	"github.com/sherlockhua/koala/config"
 
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
