@@ -27,8 +27,8 @@ func LogIDMiddleware() gin.HandlerFunc {
 		ctx := context.WithValue(c.Request.Context(), logs.LOGID, logid)
 		c.Request = c.Request.WithContext(ctx)
 
+		c.Writer.Header().Set(LOGID_Header_Name, logid)
 		// 继续执行后续的中间件或请求处理函数
 		c.Next()
-		c.Writer.Header().Set(LOGID_Header_Name, logid)
 	}
 }
