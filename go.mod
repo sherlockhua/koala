@@ -1,6 +1,6 @@
 module github.com/sherlockhua/koala
 
-go 1.23.2
+go 1.20
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
