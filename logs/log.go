@@ -44,9 +44,9 @@ func defaultLogger() Logger {
 	// Create a mock config
 	defaultConf := &config.Config{
 		Logger: config.LoggerConfig{
-			AccessFileName: "~/logs/access.log",
-			Filename:       "~/logs/app.log",
-			ErrFileName:    "~/logs/error.log",
+			AccessFileName: "./logs/access.log",
+			Filename:       "./logs/app.log",
+			ErrFileName:    "./logs/error.log",
 			LogLevel:       "debug",
 		},
 	}
