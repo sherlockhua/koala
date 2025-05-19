@@ -11,9 +11,9 @@ func TestNewLogger_TraceMessageWithContext(t *testing.T) {
 	// Create a mock config
 	mockConfig := &config.Config{
 		Logger: config.LoggerConfig{
-			AccessFileName: "~/logs/access.log",
-			Filename:       "~/logs/app.log",
-			ErrFileName:    "~/logs/error.log",
+			AccessFileName: "./logs/access.log",
+			Filename:       "./logs/app.log",
+			ErrFileName:    "./logs/error.log",
 			LogLevel:       "debug",
 		},
 	}

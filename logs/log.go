@@ -40,21 +40,6 @@ type LoggerImp struct {
 	accessLogger *logrus.Logger
 }
 
-func defaultLogger() Logger {
-	// Create a mock config
-	defaultConf := &config.Config{
-		Logger: config.LoggerConfig{
-			AccessFileName: "./logs/access.log",
-			Filename:       "./logs/app.log",
-			ErrFileName:    "./logs/error.log",
-			LogLevel:       "debug",
-		},
-	}
-
-	// Create a new logger
-	return NewLogger(defaultConf)
-}
-
 func NewLogger(conf *config.Config) Logger {
 
 	once.Do(func() {
@@ -135,7 +120,8 @@ func Init(filename string, logLevel string, logger *logrus.Logger) (err error) {
 // accessf logs a message at level Trace on the standard logger.
 func Accessf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.accessLogger.WithContext(ctx).Infof(format, args...)
 }
@@ -143,7 +129,8 @@ func Accessf(ctx context.Context, format string, args ...interface{}) {
 // Tracef logs a message at level Trace on the standard logger.
 func Tracef(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.logger.WithContext(ctx).Tracef(format, args...)
 }
@@ -151,7 +138,8 @@ func Tracef(ctx context.Context, format string, args ...interface{}) {
 // Debugf logs a message at level Debug on the standard logger.
 func Debugf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.logger.WithContext(ctx).Debugf(format, args...)
 }
@@ -159,7 +147,8 @@ func Debugf(ctx context.Context, format string, args ...interface{}) {
 // Infof logs a message at level Info on the standard logger.
 func Infof(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.logger.WithContext(ctx).Infof(format, args...)
 }
@@ -167,7 +156,8 @@ func Infof(ctx context.Context, format string, args ...interface{}) {
 // Warnf logs a message at level Warn on the standard logger.
 func Warnf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Warnf(format, args...)
 }
@@ -175,7 +165,8 @@ func Warnf(ctx context.Context, format string, args ...interface{}) {
 // Errorf logs a message at level Error on the standard logger.
 func Errorf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Errorf(format, args...)
 }
@@ -183,7 +174,8 @@ func Errorf(ctx context.Context, format string, args ...interface{}) {
 // Panicf logs a message at level Panic on the standard logger.
 func Panicf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Panicf(format, args...)
 }
@@ -191,7 +183,8 @@ func Panicf(ctx context.Context, format string, args ...interface{}) {
 // Fatalf logs a message at level Fatal on the standard logger then the process will exit with status set to 1.
 func Fatalf(ctx context.Context, format string, args ...interface{}) {
 	if loggerImp == nil {
-		_ = defaultLogger()
+		fmt.Printf(format, args...)
+		return
 	}
 	loggerImp.errorLogger.WithContext(ctx).Fatalf(format, args...)
 }
