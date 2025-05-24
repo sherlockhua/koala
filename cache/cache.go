@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -21,14 +22,26 @@ type Cache interface {
 }
 
 type CacheConfig struct {
-	Addr string        `yaml:"addr"` // Redis server address
-	TTL  time.Duration `yaml:"ttl"`  // Time-to-live for cached items
+	Addr           string
+	TTL            time.Duration
+	Host           string
+	Port           int
+	Password       string
+	DB             int
+	ConnectTimeout int
+	ReadTimeout    int
+	WriteTimeout   int
 }
 
 // NewRedisCache creates a new RedisCache with a given TTL (time-to-live).
 func NewCache(conf *CacheConfig) Cache {
 	client := redis.NewClient(&redis.Options{
-		Addr: conf.Addr,
+		Addr:         fmt.Sprintf("%s:%d", conf.Host, conf.Port),
+		Password:     conf.Password, // No password set
+		DB:           conf.DB,       // use default DB
+		DialTimeout:  time.Duration(conf.ConnectTimeout) * time.Second,
+		ReadTimeout:  time.Duration(conf.ReadTimeout) * time.Second,
+		WriteTimeout: time.Duration(conf.WriteTimeout) * time.Second,
 	})
 	return &RedisCache{client: client, ttl: conf.TTL}
 }
